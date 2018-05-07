@@ -19,7 +19,7 @@ The output is in JSON, and processes mached will contain additional information,
 ```
 usage: process_hunter.py [-h] [-p PID] [-r YARARULE] [-i IPADDRES] [-s PROCNAME] [-f]
 
-optional arguments:<br>
+optional arguments:
   -h, --help            show this help message and exit
 	-p PID, --pid PID     Process id
 	-r YARARULE, --rule YARARULE Yara rule
