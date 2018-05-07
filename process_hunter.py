@@ -276,54 +276,57 @@ if __name__ == "__main__":
         parser.add_argument('-s' , '--proc', action='store',dest='procname',help='Process name', required=False)
         parser.add_argument("-f","--full", help="Dump running processes",action="store_true")
         args = parser.parse_args()
-        client_uuid = str(uuid.uuid4())
-        report_time = str(datetime.datetime.now())
-        client_hostname = platform.node()
+        run_info = {
+            'client_hostname': platform.node(),
+            'client_os': str(platform.system()),
+            'client_uuid': str(uuid.uuid4()),
+            'report_time': str(datetime.datetime.now()),
+        }
         if args.pid:
             ScanReport(int(args.pid))
-            print(json.dumps([{"Report_time": report_time,
-                            "Client_hostname": client_hostname,
-                            "Client_UUID": client_uuid,
-                            "Client_OS": str(platform.system()),
-                            "Process_analysis": process_report
-                            }],
-                            indent=4, separators=(',', ': ')))
+            print(json.dumps([{"Report_time": run_info['report_time'],
+                               "Client_hostname": run_info['client_hostname'],
+                               "Client_UUID": run_info['client_uuid'],
+                               "Client_OS": run_info['client_os'],
+                               "Process_analysis": process_report
+                               }],
+                             indent=4, separators=(',', ': ')))
         elif args.yararule:
             YaraScan(args.yararule)
-            print(json.dumps([{"Report_time": report_time,
-                            "Client_hostname": client_hostname,
-                            "Client_UUID": client_uuid,
-                            "Client_OS": str(platform.system()),
-                            "Process_analysis": process_report
-                            }],
-                            indent=4, separators=(',', ': ')))
+            print(json.dumps([{"Report_time": run_info['report_time'],
+                               "Client_hostname": run_info['client_hostname'],
+                               "Client_UUID": run_info['client_uuid'],
+                               "Client_OS": run_info['client_os'],
+                               "Process_analysis": process_report
+                               }],
+                             indent=4, separators=(',', ': ')))
         elif args.full:
             FullProcDump()
-            print(json.dumps([{"Report_time": report_time,
-                            "Client_hostname": client_hostname,
-                            "Client_UUID": client_uuid,
-                            "Client_OS": str(platform.system()),
-                            "Process_analysis": process_report
-                            }],
-                            indent=4, separators=(',', ': ')))
+            print(json.dumps([{"Report_time": run_info['report_time'],
+                               "Client_hostname": run_info['client_hostname'],
+                               "Client_UUID": run_info['client_uuid'],
+                               "Client_OS": run_info['client_os'],
+                               "Process_analysis": process_report
+                               }],
+                             indent=4, separators=(',', ': ')))
         elif args.ipaddres:
             IpScan(args.ipaddres)
-            print(json.dumps([{"Report_time": report_time,
-                            "Client_hostname": client_hostname,
-                            "Client_UUID": client_uuid,
-                            "Client_OS": str(platform.system()),
-                            "Process_analysis": process_report
-                            }],
-                            indent=4, separators=(',', ': ')))
+            print(json.dumps([{"Report_time": run_info['report_time'],
+                               "Client_hostname": run_info['client_hostname'],
+                               "Client_UUID": run_info['client_uuid'],
+                               "Client_OS": run_info['client_os'],
+                               "Process_analysis": process_report
+                               }],
+                             indent=4, separators=(',', ': ')))
         elif args.procname:
             GetProcByName(args.procname)
-            print(json.dumps([{"Report_time": report_time,
-                            "Client_hostname": client_hostname,
-                            "Client_UUID": client_uuid,
-                            "Client_OS": str(platform.system()),
-                            "Process_analysis": process_report
-                            }],
-                            indent=4, separators=(',', ': ')))
+            print(json.dumps([{"Report_time": run_info['report_time'],
+                               "Client_hostname": run_info['client_hostname'],
+                               "Client_UUID": run_info['client_uuid'],
+                               "Client_OS": run_info['client_os'],
+                               "Process_analysis": process_report
+                               }],
+                             indent=4, separators=(',', ': ')))
         else:
             parser.print_help()
             sys.exit(0)
