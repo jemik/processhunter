@@ -244,7 +244,7 @@ def IpScan(ipaddr):
         pass
 
 
-# Check  if PE is signed. windows onlyfiles
+# Check  if PE is signed. windows only
 
 def check_signed_detailed(imagepath):
 	# Virtual Address
