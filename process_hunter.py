@@ -267,6 +267,17 @@ def check_signed_detailed(imagepath):
         return {}
 
 
+def create_report(run_info, process_report):
+    """Returns a string with runtime information and process results"""
+    return json.dumps([{"Report_time": run_info['report_time'],
+                        "Client_hostname": run_info['client_hostname'],
+                        "Client_UUID": run_info['client_uuid'],
+                        "Client_OS": run_info['client_os'],
+                        "Process_analysis": process_report
+                        }],
+                      indent=4, separators=(',', ': '))
+
+
 if __name__ == "__main__":
     try:
         parser = argparse.ArgumentParser(description='Process analysis tool')
@@ -284,49 +295,19 @@ if __name__ == "__main__":
         }
         if args.pid:
             ScanReport(int(args.pid))
-            print(json.dumps([{"Report_time": run_info['report_time'],
-                               "Client_hostname": run_info['client_hostname'],
-                               "Client_UUID": run_info['client_uuid'],
-                               "Client_OS": run_info['client_os'],
-                               "Process_analysis": process_report
-                               }],
-                             indent=4, separators=(',', ': ')))
+            print(create_report(run_info, process_report))
         elif args.yararule:
             YaraScan(args.yararule)
-            print(json.dumps([{"Report_time": run_info['report_time'],
-                               "Client_hostname": run_info['client_hostname'],
-                               "Client_UUID": run_info['client_uuid'],
-                               "Client_OS": run_info['client_os'],
-                               "Process_analysis": process_report
-                               }],
-                             indent=4, separators=(',', ': ')))
+            print(create_report(run_info, process_report))
         elif args.full:
             FullProcDump()
-            print(json.dumps([{"Report_time": run_info['report_time'],
-                               "Client_hostname": run_info['client_hostname'],
-                               "Client_UUID": run_info['client_uuid'],
-                               "Client_OS": run_info['client_os'],
-                               "Process_analysis": process_report
-                               }],
-                             indent=4, separators=(',', ': ')))
+            print(create_report(run_info, process_report))
         elif args.ipaddres:
             IpScan(args.ipaddres)
-            print(json.dumps([{"Report_time": run_info['report_time'],
-                               "Client_hostname": run_info['client_hostname'],
-                               "Client_UUID": run_info['client_uuid'],
-                               "Client_OS": run_info['client_os'],
-                               "Process_analysis": process_report
-                               }],
-                             indent=4, separators=(',', ': ')))
+            print(create_report(run_info, process_report))
         elif args.procname:
             GetProcByName(args.procname)
-            print(json.dumps([{"Report_time": run_info['report_time'],
-                               "Client_hostname": run_info['client_hostname'],
-                               "Client_UUID": run_info['client_uuid'],
-                               "Client_OS": run_info['client_os'],
-                               "Process_analysis": process_report
-                               }],
-                             indent=4, separators=(',', ': ')))
+            print(create_report(run_info, process_report))
         else:
             parser.print_help()
             sys.exit(0)
