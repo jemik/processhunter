@@ -104,7 +104,7 @@ def GetProcParrent(pid):
 
     try:
         p = psutil.Process(pid)
-        ptime, pname, pcmd, ppath = Get_Proc_details(p.ppid())
+        ptime, pname, pcmd, ppath = Get_Proc_details(p.pid)
         md5, sha1, sha256  = get_hash(ppath)
         hash_info = {"md5": md5, "sha1": sha1, "sha256": sha256}
         proc_ancestors.insert(0,{"Creation time": ptime,"pid": p.pid,"ppid": p.ppid(), "name": pname, "cmd":  pcmd, "path": ppath, "hash": hash_info, "check_signed_detailed": check_signed_detailed(ppath), "connections": Get_ProcConnections(p.ppid())})
