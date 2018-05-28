@@ -107,7 +107,7 @@ def GetProcParrent(pid):
         ptime, pname, pcmd, ppath = Get_Proc_details(p.ppid())
         md5, sha1, sha256  = get_hash(ppath)
         hash_info = {"md5": md5, "sha1": sha1, "sha256": sha256}
-        proc_ancestors.insert(0,{"Creation time": ptime,"pid": p.ppid(),"childpid": p.pid, "name": pname, "cmd":  pcmd, "path": ppath, "hash": hash_info, "check_signed_detailed": check_signed_detailed(ppath), "connections": Get_ProcConnections(p.ppid())})
+        proc_ancestors.insert(0,{"Creation time": ptime,"pid": p.pid,"ppid": p.ppid(), "name": pname, "cmd":  pcmd, "path": ppath, "hash": hash_info, "check_signed_detailed": check_signed_detailed(ppath), "connections": Get_ProcConnections(p.ppid())})
         #print ("My Parent: PPID: %s ChildPid: %s Name: %s CMD: %s Path: %s" % (p.ppid(), p.pid,Get_Proc_details(p.ppid()), GetProc_Cmd(p.ppid()), GetProc_Path(p.ppid()) ))
         if p.ppid() is not 0:
             GetProcParrent(p.ppid())
@@ -132,7 +132,8 @@ def ScanReport(PID):
     global counter
     global proc_ancestors
     global children
-    GetProcParrent(PID)
+    p = psutil.Process(PID)
+    GetProcParrent(p.ppid())
     GetProcChildren(PID)
     ptime, pname, pcmd, ppath = Get_Proc_details(PID)
     md5, sha1, sha256  = get_hash(ppath)
@@ -145,6 +146,7 @@ def ScanReport(PID):
                     "Process_path": ppath,
                     "yara": yara_report,
                     "hash_info": hash_info,
+                    "Parent_pid": p.ppid(),
                     "Process_ancestors": proc_ancestors,
                     "Process_children": children,
                     "check_signed_detailed": check_signed_detailed(ppath),
@@ -285,7 +287,7 @@ if __name__ == "__main__":
         parser.add_argument('-r' , '--rule', action='store',dest='yararule',help='Yara rule', required=False)
         parser.add_argument('-i' , '--ip', action='store',dest='ipaddres',help='Ipv4 address', required=False)
         parser.add_argument('-s' , '--proc', action='store',dest='procname',help='Process name', required=False)
-        parser.add_argument("-f","--full", help="Dump running processes",action="store_true")
+        parser.add_argument('-f' , '--full', help='Dump running processes',action='store_true')
         args = parser.parse_args()
         run_info = {
             'client_hostname': platform.node(),
